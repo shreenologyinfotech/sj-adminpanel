@@ -1,13 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use SJ\AdminPanel\Http\Controllers\DashboardController;
-use SJ\AdminPanel\Http\Controllers\AuthController;
-use SJ\AdminPanel\Http\Controllers\BreadController;
-use SJ\AdminPanel\Http\Controllers\DatabaseController;
-use SJ\AdminPanel\Http\Controllers\MenuController;
-use SJ\AdminPanel\Http\Controllers\MediaController;
-use SJ\AdminPanel\Http\Controllers\SettingController;
+use safarjaisur\AdminPanel\Http\Controllers\DashboardController;
+use safarjaisur\AdminPanel\Http\Controllers\AuthController;
+use safarjaisur\AdminPanel\Http\Controllers\BreadController;
+use safarjaisur\AdminPanel\Http\Controllers\DatabaseController;
+use safarjaisur\AdminPanel\Http\Controllers\MenuController;
+use safarjaisur\AdminPanel\Http\Controllers\MediaController;
+use safarjaisur\AdminPanel\Http\Controllers\SettingController;
 
 Route::get('login', [AuthController::class, 'showLogin'])->name('sjadmin.login');
 Route::post('login', [AuthController::class, 'login']);

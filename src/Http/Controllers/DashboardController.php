@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Http\Controllers;
+namespace safarjaisur\AdminPanel\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;

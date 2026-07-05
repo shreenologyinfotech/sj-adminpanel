@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Repositories;
+namespace safarjaisur\AdminPanel\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;

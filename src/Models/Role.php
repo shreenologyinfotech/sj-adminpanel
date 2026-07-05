@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Models;
+namespace safarjaisur\AdminPanel\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

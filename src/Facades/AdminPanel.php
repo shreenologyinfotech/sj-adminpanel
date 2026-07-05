@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Facades;
+namespace safarjaisur\AdminPanel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

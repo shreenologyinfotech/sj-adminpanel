@@ -13,7 +13,7 @@ return [
     
     'middleware' => [
         'web',
-        \SJ\AdminPanel\Http\Middleware\AdminMiddleware::class,
+        \safarjaisur\AdminPanel\Http\Middleware\AdminMiddleware::class,
     ],
 
     /*

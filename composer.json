@@ -1,11 +1,11 @@
 {
-  "name": "sj/adminpanel",
+  "name": "safarjaisur/adminpanel",
   "description": "Enterprise-grade Laravel 12 Admin Panel package with BREAD builder, Database manager, Media manager, and RBAC.",
   "type": "laravel-package",
   "license": "MIT",
   "authors": [
     {
-      "name": "SJ Admin Team",
+      "name": "SAFARJAISUR Admin Team",
       "email": "shreenologyinfotech@gmail.com"
     }
   ],
@@ -19,16 +19,16 @@
   },
   "autoload": {
     "psr-4": {
-      "SJ\\AdminPanel\\": "src/"
+      "safarjaisur\\AdminPanel\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "SJ\\AdminPanel\\Providers\\AdminPanelServiceProvider"
+        "safarjaisur\\AdminPanel\\Providers\\AdminPanelServiceProvider"
       ],
       "aliases": {
-        "AdminPanel": "SJ\\AdminPanel\\Facades\\AdminPanel"
+        "AdminPanel": "safarjaisur\\AdminPanel\\Facades\\AdminPanel"
       }
     }
   },

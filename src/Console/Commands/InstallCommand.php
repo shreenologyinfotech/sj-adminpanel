@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Console\Commands;
+namespace safarjaisur\AdminPanel\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -29,7 +29,7 @@ class InstallCommand extends Command
         Artisan::call('migrate');
 
         $this->info('Seeding default administrator credentials...');
-        Artisan::call('db:seed', ['--class' => '\\SJ\\AdminPanel\\Database\\Seeders\\AdminPanelSeeder']);
+        Artisan::call('db:seed', ['--class' => '\\safarjaisur\\AdminPanel\\Database\\Seeders\\AdminPanelSeeder']);
 
         $this->info('Creating symlink for file storage...');
         Artisan::call('storage:link');

@@ -7,7 +7,7 @@ A modern, highly extensible BREAD and administration panel system designed for L
 Install the package via Composer:
 
 ```bash
-composer require sj/adminpanel
+composer require safarjaisur/adminpanel
 ```
 
 Execute the installation command to publish assets, configuration, views, run migrations, and seed default admin accounts:

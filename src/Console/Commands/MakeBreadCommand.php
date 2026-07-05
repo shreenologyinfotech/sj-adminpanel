@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Console\Commands;
+namespace safarjaisur\AdminPanel\Console\Commands;
 
 use Illuminate\Console\Command;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Services;
+namespace safarjaisur\AdminPanel\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use SJ\AdminPanel\Models\Setting;
+use safarjaisur\AdminPanel\Models\Setting;
 
 class BreadService
 {

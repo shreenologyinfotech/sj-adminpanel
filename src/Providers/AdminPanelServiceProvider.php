@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SJ\AdminPanel\Providers;
+namespace safarjaisur\AdminPanel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use SJ\AdminPanel\Console\Commands\InstallCommand;
-use SJ\AdminPanel\Console\Commands\MakeBreadCommand;
-use SJ\AdminPanel\Console\Commands\MakeModuleCommand;
-use SJ\AdminPanel\Console\Commands\MakeWidgetCommand;
+use safarjaisur\AdminPanel\Console\Commands\InstallCommand;
+use safarjaisur\AdminPanel\Console\Commands\MakeBreadCommand;
+use safarjaisur\AdminPanel\Console\Commands\MakeModuleCommand;
+use safarjaisur\AdminPanel\Console\Commands\MakeWidgetCommand;
 
 class AdminPanelServiceProvider extends ServiceProvider
 {
@@ -20,7 +20,7 @@ class AdminPanelServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton('sjadminpanel', function ($app) {
-            return new \SJ\AdminPanel\Support\AdminPanelManager();
+            return new \safarjaisur\AdminPanel\Support\AdminPanelManager();
         });
     }
 
