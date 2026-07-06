@@ -3,60 +3,73 @@
 declare(strict_types=1);
 
 return [
+
     /*
     |--------------------------------------------------------------------------
-    | Route Configurations
+    | Route Configuration
     |--------------------------------------------------------------------------
-    | Define the base URI prefix and middleware groups for the admin panel routes.
     */
-    'route_prefix' => env('SJ_ADMIN_PREFIX', 'admin'),
-    
-    'middleware' => [
-        'web',
-        \safarjaisur\AdminPanel\Http\Middleware\AdminMiddleware::class,
+    'route' => [
+        'prefix' => env('SJADMIN_ROUTE_PREFIX', 'admin'),
+        'middleware' => ['web', 'sjadmin.auth'],
+        'domain' => env('SJADMIN_ROUTE_DOMAIN', null),
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Database Connection
+    | Authentication
     |--------------------------------------------------------------------------
-    | SJ Admin Panel operates using default connections, with support for 
-    | custom connections (e.g. host: localhost, db: alokwebsite2, user: root).
     */
-    'database' => [
-        'connection' => env('DB_CONNECTION', 'mysql'),
-        'host' => env('DB_HOST', 'localhost'),
-        'database' => env('DB_DATABASE', 'alokwebsite2'),
-        'username' => env('DB_USERNAME', 'root'),
-        'password' => env('DB_PASSWORD', ''),
+    'auth' => [
+        'guard' => 'sjadmin',
+        'provider' => 'sjadmin_users',
+        'model' => \Safarjaisur\AdminPanel\Models\AdminUser::class,
+        'redirect_after_login' => 'sjadmin.dashboard',
+        'redirect_after_logout' => 'sjadmin.login',
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Theme and Branding Settings
+    | Default Admin (used by the installer / seeder)
     |--------------------------------------------------------------------------
-    | Configures standard visual branding elements for the template.
+    */
+    'default_admin' => [
+        'name' => 'Admin',
+        'email' => 'admin@example.com',
+        'password' => 'password',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Theme
+    |--------------------------------------------------------------------------
     */
     'theme' => [
-        'mode' => 'light', // light or dark
+        'name' => env('SJADMIN_THEME', 'axelit'),
+        'dark_mode' => true,
         'rtl' => false,
-        'primary_color' => '#4e73df',
-        'logo' => '/assets/sjadmin/img/logo.png',
-        'favicon' => '/assets/sjadmin/img/favicon.ico',
-        'title' => 'SJ Admin Panel',
+        'logo' => 'vendor/sjadminpanel/images/logo/1.png',
+        'favicon' => 'vendor/sjadminpanel/images/logo/favicon.png',
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Media Manager Configuration
+    | Storage / Media
     |--------------------------------------------------------------------------
-    | Storage disk and folder configurations for media uploads.
     */
+    'storage' => [
+        'disk' => env('SJADMIN_DISK', 'public'),
+        'media_path' => 'media',
+    ],
+
     'media' => [
-        'disk' => env('SJ_MEDIA_DISK', 'public'),
-        'folder' => 'uploads',
-        'allowed_types' => ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/json'],
-        'max_size' => 5120, // in KB
+        'thumbnails' => [
+            'small' => [150, 150],
+            'medium' => [400, 400],
+            'large' => [1024, 1024],
+        ],
+        'max_upload_size' => 10240, // KB
+        'allowed_mimes' => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'pdf', 'zip', 'doc', 'docx'],
     ],
 
     /*
@@ -65,6 +78,38 @@ return [
     |--------------------------------------------------------------------------
     */
     'pagination' => [
-        'per_page' => 15,
+        'per_page' => 20,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Localization
+    |--------------------------------------------------------------------------
+    */
+    'language' => [
+        'default' => 'en',
+        'available' => ['en'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard Widgets
+    |--------------------------------------------------------------------------
+    */
+    'dashboard' => [
+        'widgets' => [
+            \Safarjaisur\AdminPanel\Widgets\UsersCountWidget::class,
+            \Safarjaisur\AdminPanel\Widgets\RecentUsersWidget::class,
+            \Safarjaisur\AdminPanel\Widgets\SystemStatusWidget::class,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | BREAD
+    |--------------------------------------------------------------------------
+    */
+    'bread' => [
+        'table' => 'sjadmin_breads',
     ],
 ];

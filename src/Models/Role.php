@@ -2,23 +2,24 @@
 
 declare(strict_types=1);
 
-namespace safarjaisur\AdminPanel\Models;
+namespace Safarjaisur\AdminPanel\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends Model
 {
-    protected $table = 'sj_roles';
-    
-    protected $fillable = ['name', 'display_name', 'description'];
+    protected $table = 'sjadmin_roles';
 
-    public function permissions()
+    protected $fillable = ['name', 'slug', 'description'];
+
+    public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'sj_role_permissions');
+        return $this->belongsToMany(Permission::class, 'sjadmin_permission_role', 'role_id', 'permission_id');
     }
 
-    public function users()
+    public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'sj_user_roles');
+        return $this->belongsToMany(AdminUser::class, 'sjadmin_role_user', 'role_id', 'user_id');
     }
 }

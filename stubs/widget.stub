@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use Safarjaisur\AdminPanel\Widgets\Widget;
+
+class {{ class }} extends Widget
+{
+    public function handle(): array
+    {
+        return [
+            'title' => '{{ class }}',
+            'value' => 0,
+        ];
+    }
+}

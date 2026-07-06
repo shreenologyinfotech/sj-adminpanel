@@ -2,50 +2,72 @@
 
 declare(strict_types=1);
 
-namespace safarjaisur\AdminPanel\Console\Commands;
+namespace Safarjaisur\AdminPanel\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'sjadmin:install';
-    protected $description = 'Install and boot the sjadminpanel environment and assets';
+    protected $signature = 'safarjaisuradmin:install {--force : Overwrite existing published files}';
+
+    protected $description = 'Install the Safarjaisur AdminPanel package (assets, config, views, migrations, seed data)';
 
     public function handle(): int
     {
-        $this->info('Initializing sjadminpanel Installation...');
+        $force = (bool) $this->option('force');
 
-        $this->info('Publishing config...');
-        Artisan::call('vendor:publish', ['--tag' => 'sjadminpanel-config']);
+        $this->components->info('Installing Safarjaisur AdminPanel...');
 
-        $this->info('Publishing assets...');
-        Artisan::call('vendor:publish', ['--tag' => 'sjadminpanel-assets']);
+        $this->publish('sjadminpanel-config', 'Config', $force);
+        $this->publish('sjadminpanel-assets', 'Assets', $force);
+        $this->publish('sjadminpanel-views', 'Views', $force);
+        $this->publish('sjadminpanel-lang', 'Language files', $force);
 
-        $this->info('Publishing views...');
-        Artisan::call('vendor:publish', ['--tag' => 'sjadminpanel-views']);
+        $this->components->task('Creating storage symlink', fn () => $this->createStorageLink());
 
-        $this->info('Running database migrations...');
-        Artisan::call('migrate');
+        $this->components->task('Running migrations', function () {
+            Artisan::call('migrate', ['--force' => true]);
 
-        $this->info('Seeding default administrator credentials...');
-        Artisan::call('db:seed', ['--class' => '\\safarjaisur\\AdminPanel\\Database\\Seeders\\AdminPanelSeeder']);
+            return true;
+        });
 
-        $this->info('Creating symlink for file storage...');
-        Artisan::call('storage:link');
+        $this->components->task('Seeding default admin, roles, menus & settings', function () {
+            Artisan::call('db:seed', [
+                '--class' => \Safarjaisur\AdminPanel\Database\Seeders\AdminPanelSeeder::class,
+                '--force' => true,
+            ]);
 
-        $this->info('sjadminpanel installed successfully!');
-        $this->table(
-            ['Parameter', 'Default Value'],
-            [
-                ['Route URL', url(config('sjadminpanel.route_prefix', 'admin'))],
-                ['Admin Email', 'admin@example.com'],
-                ['Password', 'password'],
-                ['Database Host', config('sjadminpanel.database.host')],
-                ['Database Name', config('sjadminpanel.database.database')]
-            ]
-        );
+            return true;
+        });
+
+        $this->newLine();
+        $this->components->info('Safarjaisur AdminPanel installed successfully.');
+        $this->line('  URL:      ' . url(config('sjadminpanel.route.prefix')));
+        $this->line('  Email:    ' . config('sjadminpanel.default_admin.email'));
+        $this->line('  Password: ' . config('sjadminpanel.default_admin.password'));
 
         return self::SUCCESS;
+    }
+
+    protected function publish(string $tag, string $label, bool $force): void
+    {
+        $this->components->task("Publishing {$label}", function () use ($tag, $force) {
+            Artisan::call('vendor:publish', [
+                '--tag' => $tag,
+                '--force' => $force,
+            ]);
+
+            return true;
+        });
+    }
+
+    protected function createStorageLink(): bool
+    {
+        if (! file_exists(public_path('storage'))) {
+            Artisan::call('storage:link');
+        }
+
+        return true;
     }
 }

@@ -2,25 +2,23 @@
 
 declare(strict_types=1);
 
-namespace safarjaisur\AdminPanel\Http\Controllers;
+namespace Safarjaisur\AdminPanel\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use Illuminate\Routing\Controller;
+use Safarjaisur\AdminPanel\Facades\AdminPanel;
+use Safarjaisur\AdminPanel\Models\AdminUser;
 
 class DashboardController extends Controller
 {
     public function index(): View
     {
-        $usersCount = DB::table('users')->count();
-        $rolesCount = DB::table('sj_roles')->count();
-        $breadCount = DB::table('sj_bread_configs')->count();
-        
-        $activities = DB::table('sj_activity_logs')
-            ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get();
+        $widgets = AdminPanel::widgets()->map(fn (string $class) => app($class)->handle());
 
-        return view('sjadmin::dashboard.index', compact('usersCount', 'rolesCount', 'breadCount', 'activities'));
+        return view('sjadminpanel::dashboard.index', [
+            'widgets' => $widgets,
+            'usersCount' => AdminUser::query()->count(),
+            'recentUsers' => AdminUser::query()->latest()->limit(5)->get(),
+        ]);
     }
 }
