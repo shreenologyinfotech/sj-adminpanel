@@ -25,7 +25,8 @@ class LoginRequest extends FormRequest
 
     public function throttleKey(): string
     {
-        return mb_strtolower($this->string('email')) . '|' . $this->ip();
+        //return mb_strtolower($this->string('email')) . '|' . $this->ip();
+        return mb_strtolower((string) $this->string('email')) . '|' . $this->ip();
     }
 
     public function ensureIsNotRateLimited(): void

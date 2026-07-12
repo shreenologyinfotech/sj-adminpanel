@@ -16,4 +16,9 @@ class Bread extends Model
     {
         return ['fields' => 'array'];
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

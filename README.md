@@ -15,6 +15,8 @@ entirely original architecture, codebase, and UI (converted from the Axelit Boot
 - Menu Builder (DB-driven sidebar, nested items, icons, permissions, ordering)
 - Media Manager (folders, upload, delete — local or S3 via the configured disk)
 - Settings Manager (grouped key/value settings: site, SEO, mail, etc.)
+- Backup Manager (create, download and delete SQL database backups)
+- Log Viewer (inspect, download and delete Laravel log files)
 - Dark mode toggle, RTL-ready layout, fully responsive
 - Artisan generators: `make:safarjaisur-module`, `make:safarjaisur-widget`, `make:safarjaisur-bread`,
   `make:safarjaisur-menu`, `make:safarjaisur-setting`, `make:safarjaisur-permission`

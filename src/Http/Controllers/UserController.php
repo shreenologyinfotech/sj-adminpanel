@@ -9,8 +9,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Safarjaisur\AdminPanel\Models\AdminUser;
 use Safarjaisur\AdminPanel\Models\Role;
+use Safarjaisur\AdminPanel\Notifications\AdminAlertNotification;
 
 class UserController extends Controller
 {
@@ -47,6 +49,16 @@ class UserController extends Controller
         ]);
 
         $user->roles()->sync($data['roles'] ?? []);
+
+        $recipients = AdminUser::query()
+            ->whereKeyNot($user->id)
+            ->whereHas('roles.permissions', fn ($q) => $q->where('slug', 'users.manage'))
+            ->get();
+
+        Notification::send($recipients, new AdminAlertNotification(
+            "New admin user \"{$user->name}\" was created.",
+            route('sjadmin.users.edit', $user)
+        ));
 
         return redirect()->route('sjadmin.users.index')->with('success', 'User created.');
     }

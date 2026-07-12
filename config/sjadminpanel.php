@@ -68,8 +68,29 @@ return [
             'medium' => [400, 400],
             'large' => [1024, 1024],
         ],
+        'driver' => env('SJADMIN_IMAGE_DRIVER', 'gd'), // 'gd' or 'imagick'
         'max_upload_size' => 10240, // KB
         'allowed_mimes' => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'pdf', 'zip', 'doc', 'docx'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Backups / Logs
+    |--------------------------------------------------------------------------
+    */
+    'backups' => [
+        'disk' => env('SJADMIN_BACKUP_DISK', 'local'),
+        'path' => env('SJADMIN_BACKUP_PATH', 'sjadmin-backups'),
+    ],
+
+    'logs' => [
+        'max_lines' => env('SJADMIN_LOG_MAX_LINES', 500),
+    ],
+
+    'files' => [
+        'disk' => env('SJADMIN_FILE_DISK', 'local'),
+        'root' => env('SJADMIN_FILE_ROOT', 'file-manager'),
+        'max_upload_size' => env('SJADMIN_FILE_MAX_UPLOAD_SIZE', 20480),
     ],
 
     /*

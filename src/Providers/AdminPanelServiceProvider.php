@@ -40,6 +40,16 @@ class AdminPanelServiceProvider extends ServiceProvider
 
         $this->app->singleton(AdminPanel::class, fn ($app) => new AdminPanel());
 
+        $this->app->singleton(\Safarjaisur\AdminPanel\Services\MediaThumbnailService::class, function ($app) {
+            $driver = config('sjadminpanel.media.driver', 'gd');
+
+            $manager = $driver === 'imagick'
+                ? \Intervention\Image\ImageManager::imagick()
+                : \Intervention\Image\ImageManager::gd();
+
+            return new \Safarjaisur\AdminPanel\Services\MediaThumbnailService($manager);
+        });
+
         $this->app->bind(MenuRepositoryInterface::class, MenuRepository::class);
         $this->app->bind(SettingRepositoryInterface::class, SettingRepository::class);
 
@@ -67,7 +77,14 @@ class AdminPanelServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom("{$this->packagePath}/routes/web.php");
         $this->loadRoutesFrom("{$this->packagePath}/routes/auth.php");
-        $this->loadRoutesFrom("{$this->packagePath}/routes/api.php");
+
+        // The REST API is opt-in: it relies on Laravel Sanctum for token
+        // auth, which is a suggested (not required) dependency. Loading
+        // api.php unconditionally would throw on "auth:sanctum" for any
+        // app that hasn't installed it.
+        if (class_exists(\Laravel\Sanctum\Sanctum::class)) {
+            $this->loadRoutesFrom("{$this->packagePath}/routes/api.php");
+        }
     }
 
     /**
@@ -94,6 +111,7 @@ class AdminPanelServiceProvider extends ServiceProvider
         $router->aliasMiddleware('sjadmin.auth', \Safarjaisur\AdminPanel\Http\Middleware\Authenticate::class);
         $router->aliasMiddleware('sjadmin.permission', \Safarjaisur\AdminPanel\Http\Middleware\EnsurePermission::class);
         $router->aliasMiddleware('sjadmin.role', \Safarjaisur\AdminPanel\Http\Middleware\EnsureRole::class);
+        $router->aliasMiddleware('sjadmin.bread_permission', \Safarjaisur\AdminPanel\Http\Middleware\EnsureBreadPermission::class);
     }
 
     protected function registerBladeComponents(): void
@@ -105,6 +123,14 @@ class AdminPanelServiceProvider extends ServiceProvider
     {
         RateLimiter::for('sjadmin-login', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());
+        });
+
+        RateLimiter::for('sjadmin-api', function (Request $request) {
+            return Limit::perMinute(120)->by($request->user()?->id ?: $request->ip());
+        });
+
+        RateLimiter::for('sjadmin-writes', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user('sjadmin')?->id ?: $request->ip());
         });
     }
 
@@ -143,9 +169,9 @@ class AdminPanelServiceProvider extends ServiceProvider
             "{$this->packagePath}/resources/views" => resource_path('views/vendor/sjadminpanel'),
         ], 'sjadminpanel-views');
 
-        $this->publishes([
-            "{$this->packagePath}/resources/lang" => $this->app->langPath('vendor/sjadminpanel'),
-        ], 'sjadminpanel-lang');
+        // $this->publishes([
+        //     "{$this->packagePath}/resources/lang" => $this->app->langPath('vendor/sjadminpanel'),
+        // ], 'sjadminpanel-lang');
 
         $this->publishes([
             "{$this->packagePath}/database/migrations" => database_path('migrations'),

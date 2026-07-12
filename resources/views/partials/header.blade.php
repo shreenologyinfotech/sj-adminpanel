@@ -12,6 +12,9 @@
             </div>
 
             <div class="col-6 col-sm-8 d-flex align-items-center justify-content-end header-right p-0">
+                <form method="GET" action="{{ route('sjadmin.search.index') }}" class="d-none d-md-flex me-3" style="max-width: 340px;">
+                    <input type="text" name="q" class="form-control form-control-sm" value="{{ request('q') }}" placeholder="Search...">
+                </form>
                 <ul class="d-flex align-items-center">
 
                     {{-- Dark mode toggle --}}

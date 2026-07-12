@@ -25,7 +25,7 @@ class MenuRepository implements MenuRepositoryInterface
                 return collect();
             }
 
-            return $menu->items()->with('children.children')->get();
+            return $menu->items()->with('children')->get();
         });
     }
 }

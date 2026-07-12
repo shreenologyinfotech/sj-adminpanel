@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Safarjaisur\AdminPanel\Models\Bread;
 use Safarjaisur\AdminPanel\Models\Permission;
 use Safarjaisur\AdminPanel\Models\Role;
 
@@ -20,7 +21,10 @@ class RoleController extends Controller
 
     public function create(): View
     {
-        return view('sjadminpanel::roles.create', ['permissions' => Permission::all()->groupBy('group')]);
+        return view('sjadminpanel::roles.create', [
+            'permissions' => Permission::all()->groupBy('group'),
+            'breadNames' => Bread::query()->pluck('name')->all(),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -42,6 +46,7 @@ class RoleController extends Controller
         return view('sjadminpanel::roles.edit', [
             'role' => $role,
             'permissions' => Permission::all()->groupBy('group'),
+            'breadNames' => Bread::query()->pluck('name')->all(),
         ]);
     }
 

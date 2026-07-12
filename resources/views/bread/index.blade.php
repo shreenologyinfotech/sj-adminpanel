@@ -16,6 +16,7 @@
                         <td><code>{{ $bread->table_name }}</code></td>
                         <td>{{ count($bread->fields) }} fields</td>
                         <td class="text-end">
+                            <a href="{{ route('sjadmin.resources.index', $bread) }}" class="btn btn-sm btn-light-success">Browse</a>
                             <a href="{{ route('sjadmin.bread.edit', $bread) }}" class="btn btn-sm btn-light-primary">Edit</a>
                             <form action="{{ route('sjadmin.bread.destroy', $bread) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')

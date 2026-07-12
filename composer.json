@@ -15,6 +15,9 @@
         "laravel/framework": "^12.0",
         "intervention/image": "^3.5"
     },
+    "suggest": {
+        "laravel/sanctum": "Required only if you want the token-authenticated REST API under /api/sjadmin (routes/api.php). The admin panel UI itself does not need it."
+    },
     "require-dev": {
         "orchestra/testbench": "^9.0",
         "phpunit/phpunit": "^11.0"

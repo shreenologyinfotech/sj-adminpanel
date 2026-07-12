@@ -37,21 +37,33 @@
 
     @include('sjadminpanel::partials.sidebar')
 
-    <div class="main-content">
-        @include('sjadminpanel::partials.header')
+    <div class="app-content">
+        <div class="">
+            @include('sjadminpanel::partials.header')
 
-        <div class="app-container">
-            @include('sjadminpanel::partials.breadcrumb')
+            <main>
+                <div class="container-fluid mt-3">
+                    @include('sjadminpanel::partials.breadcrumb')
 
-            @if (session('success'))
-                <div class="alert alert-light-success" role="alert">{{ session('success') }}</div>
-            @endif
+                    @if (session('success'))
+                        <div class="alert alert-light-success" role="alert">{{ session('success') }}</div>
+                    @endif
 
-            @yield('content')
+                    @if (session('error'))
+                        <div class="alert alert-light-danger" role="alert">{{ session('error') }}</div>
+                    @endif
+
+                    @yield('content')
+                </div>
+            </main>
         </div>
-
-        @include('sjadminpanel::partials.footer')
     </div>
+
+    <div class="go-top">
+        <span class="progress-value"><i class="ti ti-chevron-up"></i></span>
+    </div>
+
+    @include('sjadminpanel::partials.footer')
 </div>
 
 <script src="{{ asset('vendor/sjadminpanel/js/jquery-3.6.3.min.js') }}"></script>
